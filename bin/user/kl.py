@@ -1293,22 +1293,40 @@ WVIEW_SENSOR_MAP = {
 KL_SENSOR_MAP = {
     'temp0':          'Temp0',
     'humidity0':      'Humidity0',
+    'dewpoint0':      'Dewpoint0',
+    'heatindex0':     'Heatindex0',
     'temp1':          'Temp1',
     'humidity1':      'Humidity1',
+    'dewpoint1':      'Dewpoint1',
+    'heatindex1':     'Heatindex1',
     'temp2':          'Temp2',
     'humidity2':      'Humidity2',
+    'dewpoint2':      'Dewpoint2',
+    'heatindex2':     'Heatindex2',
     'temp3':          'Temp3',
     'humidity3':      'Humidity3',
+    'dewpoint3':      'Dewpoint3',
+    'heatindex3':     'Heatindex3',
     'temp4':          'Temp4',
     'humidity4':      'Humidity4',
+    'dewpoint4':      'Dewpoint4',
+    'heatindex4':     'Heatindex4',
     'temp5':          'Temp5',
     'humidity5':      'Humidity5',
+    'dewpoint5':      'Dewpoint5',
+    'heatindex5':     'Heatindex5',
     'temp6':          'Temp6',
     'humidity6':      'Humidity6',
+    'dewpoint6':      'Dewpoint6',
+    'heatindex6':     'Heatindex6',
     'temp7':          'Temp7',
     'humidity7':      'Humidity7',
+    'dewpoint7':      'Dewpoint7',
+    'heatindex7':     'Heatindex7',
     'temp8':          'Temp8',
     'humidity8':      'Humidity8',
+    'dewpoint8':      'Dewpoint8',
+    'heatindex8':     'Heatindex8',
     'rxCheckPercent': 'SignalQuality',
     'batteryStatus0': 'BatteryStatus0',
     'batteryStatus1': 'BatteryStatus1',
@@ -1927,9 +1945,9 @@ class KlimaLoggDriver(weewx.drivers.AbstractDevice):
                     # FIXME: this belongs in StdWXCalculate
                     for y in range(0, 9):
                         if 'Temp%d' % y in r and 'Humidity%d' % y in r:
-                            r['dewpoint%d' % y] = weewx.wxformulas.dewpointC(
+                            r['Dewpoint%d' % y] = weewx.wxformulas.dewpointC(
                                 r['Temp%s' % y], r['Humidity%d' % y])
-                            r['heatindex%d' % y] = weewx.wxformulas.heatindexC(
+                            r['Heatindex%d' % y] = weewx.wxformulas.heatindexC(
                                 r['Temp%s' % y], r['Humidity%d' % y])
                     # get values requested from the sensor map
                     for k in self.sensor_map:
@@ -2082,10 +2100,10 @@ class KlimaLoggDriver(weewx.drivers.AbstractDevice):
         # FIXME: this belongs in StdWXCalculate
         for y in range(0, 9):
             if 'Temp%d' % y in data.values and 'Humidity%d' % y in data.values:
-                data.values['dewpoint%d' % y] = weewx.wxformulas.dewpointC(
+                data.values['Dewpoint%d' % y] = weewx.wxformulas.dewpointC(
                     data.values['Temp%d' % y],
                     data.values['Humidity%d' % y])
-                data.values['heatindex%d' % y] = weewx.wxformulas.heatindexC(
+                data.values['Heatindex%d' % y] = weewx.wxformulas.heatindexC(
                     data.values['Temp%d' % y],
                     data.values['Humidity%d' % y])
 
