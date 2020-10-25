@@ -1786,6 +1786,8 @@ class KlimaLoggDriver(weewx.drivers.AbstractDevice):
         self.values = dict()
         for i in range(1, 9):
             self.values['sensor_text%d' % i] = stn_dict.get('sensor_text%d' % i, None)
+        self.critical_alerts = stn_dict.get('critical_alerts', "log")
+        loginf('critical alerts are reported via "log"')
 
         now = int(time.time())
         self._service = None
@@ -3470,6 +3472,8 @@ class CommunicationService(object):
         self.max_records = max_records
         self.batch_size = batch_size
 
+        self.critical_alerts = "log"
+
     def buildFirstConfigFrame(self, cs):
         logdbg('buildFirstConfigFrame: cs=%04x' % cs)
         newlen = 11
@@ -3712,12 +3716,14 @@ class CommunicationService(object):
             # both records are history records
             if tsPos1 == tsPos6 and tsPos1 != self.TS_1900:
                 if timeDiff > 300:
-                    self.station_config.setAlarmClockOffset()  # set Humidity0Min value to 99
+                    if self.critical_alerts == 'beep':
+                        self.station_config.setAlarmClockOffset()  # set Humidity0Min value to 99
                     logerr('ERROR: DCF: %s; dateTime history record %s differs %s seconds from dateTime server; please check and set set the clock of your station' %
                            (dcfOn, thisIndex, timeDiff))
                     logerr('ERROR: tsPos1: %s, tsPos2: %s' % (tsPos1, tsPos6))
                 else:
-                    self.station_config.resetAlarmClockOffset()  # set Humidity0Min value to 20
+                    if self.critical_alerts == 'beep':
+                        self.station_config.resetAlarmClockOffset()  # set Humidity0Min value to 20
                     if timeDiff > 30:
                         logdbg('DCF = %s; dateTime history record %s differs %s seconds from dateTime server' %
                                (dcfOn, thisIndex, timeDiff))
